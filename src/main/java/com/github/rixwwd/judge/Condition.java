@@ -5,7 +5,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class Condition {
+public class Condition implements Expression {
 
 	private String field;
 
@@ -43,9 +43,11 @@ public class Condition {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append('(');
 		sb.append(field);
 		sb.append(" " + operator.toString());
 		sb.append(" \"" + value + "\"");
+		sb.append(')');
 		return sb.toString();
 	}
 }

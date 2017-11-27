@@ -4,6 +4,9 @@ import java.io.EOFException;
 
 public class Tokenizer {
 
+	private static String PARENTHESIS_L="(";
+	private static String PARENTHESIS_R=")";
+	
 	private char[] source;
 	private int index;
 
@@ -47,6 +50,14 @@ public class Tokenizer {
 		return c == '#';
 	}
 
+	private static boolean isParenthesisLeft(char c) {
+		return c == '(';
+	}
+
+	private static boolean isParenthesisRight(char c) {
+		return c == ')';
+	}
+
 	private Token handleKeyword(String keyword, int col) {
 
 		TokenType t = TokenType.of(keyword);
@@ -59,15 +70,10 @@ public class Tokenizer {
 
 	public Token getToken() throws SyntaxErrorException {
 
-		if (index >= source.length) {
-			return null;
-		}
-
 		boolean parsed = false;
-		int startIndex;
 
 		try {
-			for (;;) {
+			for (;index < source.length;) {
 				char c = getChar();
 
 				// 空白スキップ
@@ -79,7 +85,7 @@ public class Tokenizer {
 
 				if (isAlphabetL(c) || isAlphabetU(c)) {
 					// キーワード
-					startIndex = index;
+					int startIndex = index;
 					StringBuilder builder = new StringBuilder();
 					builder.append(c);
 					parsed = true;
@@ -92,7 +98,7 @@ public class Tokenizer {
 					return handleKeyword(builder.toString(), startIndex);
 				} else if (isQuote(c)) {
 					// 文字列
-					startIndex = index;
+					int startIndex = index;
 					StringBuilder builder = new StringBuilder();
 					c = getChar();
 					while (!isQuote(c)) {
@@ -101,6 +107,10 @@ public class Tokenizer {
 					}
 					parsed = true;
 					return new Token(TokenType.TOKEN_STRING, builder.toString(), startIndex);
+				} else if (isParenthesisLeft(c)) {
+					return new Token(TokenType.TOKEN_PARENTHESIS_L, PARENTHESIS_L, index);
+				}else if(isParenthesisRight(c)) {
+					return new Token(TokenType.TOKEN_PARENTHESIS_R, PARENTHESIS_R, index);
 				} else if (isHash(c)) {
 					// コメント
 					index = source.length;
@@ -111,9 +121,8 @@ public class Tokenizer {
 			if (!parsed) {
 				throw new SyntaxErrorException(index);
 			}
-			return null;
 		}
-		return null;
+		return new Token(TokenType.TOKEN_END_OF_RULE, null, index);
 	}
 
 }

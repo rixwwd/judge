@@ -6,16 +6,16 @@ public class Rule {
 
 	private boolean quick;
 
-	private Condition condition;
+	private Expression expression;
 
-	public Rule(Action a, boolean quick, Condition c) {
+	public Rule(Action a, boolean quick, Expression e) {
 		this.action = a;
 		this.quick = quick;
-		this.condition = c;
+		this.expression = e;
 	}
 
 	public boolean eval(Areq areq) {
-		return condition.eval(areq);
+		return expression.eval(areq);
 	}
 
 	public Action getAction() {
@@ -34,7 +34,7 @@ public class Rule {
 		if (quick) {
 			sb.append(" quick");
 		}
-		sb.append(" " + condition.toString());
+		sb.append(" " + expression.toString());
 
 		return sb.toString();
 	}

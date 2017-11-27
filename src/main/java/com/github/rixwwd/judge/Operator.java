@@ -7,12 +7,23 @@ public enum Operator {
 		boolean eval(String a, String b) {
 			return a.compareTo(b) == 0;
 		}
+
+		@Override
+		public String toString() {
+			return "eq";
+		}
+
 	},
 	NE {
-		
+
 		@Override
 		boolean eval(String a, String b) {
 			return a.compareTo(b) != 0;
+		}
+
+		@Override
+		public String toString() {
+			return "ne";
 		}
 	},
 	LE {
@@ -20,11 +31,21 @@ public enum Operator {
 		boolean eval(String a, String b) {
 			return a.compareTo(b) <= 0;
 		}
+
+		@Override
+		public String toString() {
+			return "le";
+		}
 	},
 	LT {
 		@Override
 		boolean eval(String a, String b) {
 			return a.compareTo(b) < 0;
+		}
+
+		@Override
+		public String toString() {
+			return "lt";
 		}
 	},
 	GE {
@@ -32,13 +53,23 @@ public enum Operator {
 		boolean eval(String a, String b) {
 			return a.compareTo(b) >= 0;
 		}
+
+		@Override
+		public String toString() {
+			return "ge";
+		}
 	},
 	GT {
 		@Override
 		boolean eval(String a, String b) {
 			return a.compareTo(b) > 0;
 		}
+
+		@Override
+		public String toString() {
+			return "gt";
+		}
 	};
-	
+
 	abstract boolean eval(String a, String b);
 }
