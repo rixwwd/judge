@@ -4,6 +4,15 @@ This is script engine for decide to 3-D Secure transaction status.
 It's use to decide transaction status in ARes Message by ACS. 
 
 
+# Example
+
+~~~
+reject acctNumber eq "9999999999999999"
+challenge acctNumber eq "9999999999999998"
+challenge purchaseAmount ge "100000" and purchaseCurrency eq "392"
+authenticated purchaseAmount lt "100000" and purchaseCurrency eq "392"
+~~~
+
 # Syntax
 
 ~~~
