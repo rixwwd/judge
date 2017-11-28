@@ -1,5 +1,8 @@
 package com.github.rixwwd.judge;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RuleParser {
 
 	private Tokenizer token;
@@ -66,24 +69,38 @@ public class RuleParser {
 
 	private Expression parseExpression() throws SyntaxErrorException {
 		Expression l = parseExpression0();
+		List<Expression> expressions = new ArrayList<>();
+
 		Token or = getToken();
-		if (TokenType.TOKEN_OP_OR == or.getTokenType()) {
-			Expression r = parseExpression0();
-			return new Or(l, r);
+		while (TokenType.TOKEN_OP_OR == or.getTokenType()) {
+			Expression e = parseExpression0();
+			expressions.add(e);
+			or = getToken();
+		}
+		back(or);
+
+		if (expressions.size() > 0) {
+			return new Or(l, expressions.toArray(new Expression[] {}));
 		}
 
-		back(or);
 		return l;
 	}
 
 	private Expression parseExpression0() throws SyntaxErrorException {
 		Expression l = parseExpression1();
+		List<Expression> expressions = new ArrayList<>();
+
 		Token and = getToken();
-		if (TokenType.TOKEN_OP_AND == and.getTokenType()) {
-			Expression r = parseExpression1();
-			return new And(l, r);
+		while (TokenType.TOKEN_OP_AND == and.getTokenType()) {
+			Expression e = parseExpression1();
+			expressions.add(e);
+			and = getToken();
 		}
 		back(and);
+
+		if (expressions.size() > 0) {
+			return new And(l, expressions.toArray(new Expression[] {}));
+		}
 		return l;
 	}
 
