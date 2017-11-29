@@ -22,6 +22,8 @@ public enum TokenType {
 	TOKEN_OP_NOT("not"),
 	TOKEN_PARENTHESIS_L(null),
 	TOKEN_PARENTHESIS_R(null),
+	TOKEN_BOOLEAN_TRUE("true"),
+	TOKEN_BOOLEAN_FALSE("false"),
 	TOKEN_STRING(null),
 	TOKEN_END_OF_RULE(null);
 	//@formatter:on

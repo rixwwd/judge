@@ -19,4 +19,11 @@ public class RuleParserTest {
 				"attempt dsTransID ne \"\" and (acquirerBIN eq \"123\" and merchantID eq \"123\") and cardholderName ne \"\"");
 		System.out.println(r.toString());
 	}
+
+	@Test
+	public void test3() throws Exception {
+		RuleParser p = new RuleParser();
+		Rule r = p.parse("cancel true");
+		System.out.println(r.toString());
+	}
 }

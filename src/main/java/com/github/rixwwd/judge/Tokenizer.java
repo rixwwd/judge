@@ -4,9 +4,9 @@ import java.io.EOFException;
 
 public class Tokenizer {
 
-	private static String PARENTHESIS_L="(";
-	private static String PARENTHESIS_R=")";
-	
+	private static String PARENTHESIS_L = "(";
+	private static String PARENTHESIS_R = ")";
+
 	private char[] source;
 	private int index;
 
@@ -70,10 +70,12 @@ public class Tokenizer {
 
 	public Token getToken() throws SyntaxErrorException {
 
+		int startIndex = 0;
+		StringBuilder builder = null;
 		boolean parsed = false;
 
 		try {
-			for (;index < source.length;) {
+			for (; index < source.length;) {
 				char c = getChar();
 
 				// 空白スキップ
@@ -85,8 +87,8 @@ public class Tokenizer {
 
 				if (isAlphabetL(c) || isAlphabetU(c)) {
 					// キーワード
-					int startIndex = index;
-					StringBuilder builder = new StringBuilder();
+					startIndex = index;
+					builder = new StringBuilder();
 					builder.append(c);
 					parsed = true;
 					c = getChar();
@@ -98,18 +100,17 @@ public class Tokenizer {
 					return handleKeyword(builder.toString(), startIndex);
 				} else if (isQuote(c)) {
 					// 文字列
-					int startIndex = index;
-					StringBuilder builder = new StringBuilder();
+					startIndex = index;
+					builder = new StringBuilder();
 					c = getChar();
 					while (!isQuote(c)) {
 						builder.append(c);
 						c = getChar();
 					}
-					parsed = true;
 					return new Token(TokenType.TOKEN_STRING, builder.toString(), startIndex);
 				} else if (isParenthesisLeft(c)) {
 					return new Token(TokenType.TOKEN_PARENTHESIS_L, PARENTHESIS_L, index);
-				}else if(isParenthesisRight(c)) {
+				} else if (isParenthesisRight(c)) {
 					return new Token(TokenType.TOKEN_PARENTHESIS_R, PARENTHESIS_R, index);
 				} else if (isHash(c)) {
 					// コメント
@@ -118,7 +119,11 @@ public class Tokenizer {
 				}
 			}
 		} catch (EOFException e) {
-			if (!parsed) {
+			if (parsed) {
+				if (builder != null) {
+					return handleKeyword(builder.toString(), startIndex);
+				}
+			} else {
 				throw new SyntaxErrorException(index);
 			}
 		}

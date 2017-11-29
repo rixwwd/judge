@@ -134,8 +134,12 @@ public class RuleParser {
 		return e;
 	}
 
-	private Condition parseCondition() throws SyntaxErrorException {
+	private Expression parseCondition() throws SyntaxErrorException {
 
+		Expression b = parseBoolean();
+		if (b != null) {
+			return b;
+		}
 		String field = parseField();
 		Operator op = parseOperator();
 		String str = parseStr();
@@ -170,6 +174,17 @@ public class RuleParser {
 		default:
 			throw new SyntaxErrorException(op.getColumn());
 		}
+	}
+
+	private Boolean parseBoolean() throws SyntaxErrorException {
+		Token b = getToken();
+		if (b.getTokenType() == TokenType.TOKEN_BOOLEAN_TRUE) {
+			return Boolean.TRUE;
+		} else if (b.getTokenType() == TokenType.TOKEN_BOOLEAN_FALSE) {
+			return Boolean.FALSE;
+		}
+		back(b);
+		return null;
 	}
 
 	private String parseStr() throws SyntaxErrorException {
