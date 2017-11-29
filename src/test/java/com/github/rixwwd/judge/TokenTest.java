@@ -10,7 +10,7 @@ public class TokenTest {
 	@Test
 	public void test() throws Exception {
 		Tokenizer token = new Tokenizer("reject quick acctNumber eq \"9999999999999999\" # comment   ");
-		
+
 		Token t1 = token.getToken();
 		assertThat(t1.getTokenType(), is(TokenType.TOKEN_ACTION_REJECT));
 		Token t2 = token.getToken();
@@ -22,8 +22,8 @@ public class TokenTest {
 		assertThat(t4.getTokenType(), is(TokenType.TOKEN_OP_EQ));
 		Token t5 = token.getToken();
 		assertThat(t5.getTokenType(), is(TokenType.TOKEN_STRING));
-		assertThat(t5.getValue(),is("9999999999999999"));
-		assertNull(token.getToken());
+		assertThat(t5.getValue(), is("9999999999999999"));
+		assertThat(token.getToken().getTokenType(), is(TokenType.TOKEN_END_OF_RULE));
 	}
 
 }
