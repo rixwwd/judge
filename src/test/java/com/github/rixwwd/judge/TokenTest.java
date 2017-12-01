@@ -17,12 +17,12 @@ public class TokenTest {
 		assertThat(t2.getTokenType(), is(TokenType.TOKEN_QUICK));
 		Token t3 = token.getToken();
 		assertThat(t3.getTokenType(), is(TokenType.TOKEN_FIELD));
-		assertThat(t3.getValue(), is("acctNumber"));
+		assertThat(t3.getStringValue(), is("acctNumber"));
 		Token t4 = token.getToken();
 		assertThat(t4.getTokenType(), is(TokenType.TOKEN_OP_EQ));
 		Token t5 = token.getToken();
 		assertThat(t5.getTokenType(), is(TokenType.TOKEN_STRING));
-		assertThat(t5.getValue(), is("9999999999999999"));
+		assertThat(t5.getStringValue(), is("9999999999999999"));
 		assertThat(token.getToken().getTokenType(), is(TokenType.TOKEN_END_OF_RULE));
 	}
 

@@ -13,6 +13,16 @@ public enum Operator {
 			return "eq";
 		}
 
+		@Override
+		boolean eval(boolean a, boolean b) {
+			return a == b;
+		}
+
+		@Override
+		boolean eval(int a, int b) {
+			return a == b;
+		}
+
 	},
 	NE {
 
@@ -25,6 +35,16 @@ public enum Operator {
 		public String toString() {
 			return "ne";
 		}
+
+		@Override
+		boolean eval(boolean a, boolean b) {
+			return a != b;
+		}
+
+		@Override
+		boolean eval(int a, int b) {
+			return a != b;
+		}
 	},
 	LE {
 		@Override
@@ -35,6 +55,16 @@ public enum Operator {
 		@Override
 		public String toString() {
 			return "le";
+		}
+
+		@Override
+		boolean eval(boolean a, boolean b) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		boolean eval(int a, int b) {
+			return a <= b;
 		}
 	},
 	LT {
@@ -47,6 +77,16 @@ public enum Operator {
 		public String toString() {
 			return "lt";
 		}
+
+		@Override
+		boolean eval(boolean a, boolean b) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		boolean eval(int a, int b) {
+			return a < b;
+		}
 	},
 	GE {
 		@Override
@@ -57,6 +97,16 @@ public enum Operator {
 		@Override
 		public String toString() {
 			return "ge";
+		}
+
+		@Override
+		boolean eval(boolean a, boolean b) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		boolean eval(int a, int b) {
+			return a >= b;
 		}
 	},
 	GT {
@@ -69,7 +119,21 @@ public enum Operator {
 		public String toString() {
 			return "gt";
 		}
+
+		@Override
+		boolean eval(boolean a, boolean b) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		boolean eval(int a, int b) {
+			return a > b;
+		}
 	};
 
 	abstract boolean eval(String a, String b);
+
+	abstract boolean eval(boolean a, boolean b);
+
+	abstract boolean eval(int a, int b);
 }

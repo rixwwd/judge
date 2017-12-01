@@ -5,6 +5,9 @@ import java.util.List;
 
 public class RuleParser {
 
+	private static final Expression TRUE = new TrueExpression();
+	private static final Expression FALSE = new FalseExpression();
+
 	private Tokenizer token;
 
 	private Token currentToken;
@@ -142,14 +145,14 @@ public class RuleParser {
 		}
 		String field = parseField();
 		Operator op = parseOperator();
-		String str = parseStr();
-		return new Condition(field, op, str);
+		Object val = parseValue();
+		return new Condition(field, op, val);
 	}
 
 	private String parseField() throws SyntaxErrorException {
 		Token field = getToken();
 		if (field.getTokenType() == TokenType.TOKEN_FIELD) {
-			return field.getValue();
+			return field.getStringValue();
 		} else {
 			throw new SyntaxErrorException(field.getColumn());
 		}
@@ -176,25 +179,32 @@ public class RuleParser {
 		}
 	}
 
-	private Boolean parseBoolean() throws SyntaxErrorException {
-		Token b = getToken();
-		if (b.getTokenType() == TokenType.TOKEN_BOOLEAN_TRUE) {
+	private Object parseValue() throws SyntaxErrorException {
+		Token v = getToken();
+		switch (v.getTokenType()) {
+		case TOKEN_STRING:
+			return v.getStringValue();
+		case TOKEN_INTEGER:
+			return v.getIntegerValue();
+		case TOKEN_BOOLEAN_TRUE:
 			return Boolean.TRUE;
-		} else if (b.getTokenType() == TokenType.TOKEN_BOOLEAN_FALSE) {
+		case TOKEN_BOOLEAN_FALSE:
 			return Boolean.FALSE;
+		default:
+			back(v);
 		}
-		back(b);
 		return null;
 	}
 
-	private String parseStr() throws SyntaxErrorException {
-		Token str = getToken();
-		if (str.getTokenType() == TokenType.TOKEN_STRING) {
-			// ok
-			return str.getValue();
-		} else {
-			throw new SyntaxErrorException(str.getColumn());
+	private Expression parseBoolean() throws SyntaxErrorException {
+		Token b = getToken();
+		if (b.getTokenType() == TokenType.TOKEN_BOOLEAN_TRUE) {
+			return TRUE;
+		} else if (b.getTokenType() == TokenType.TOKEN_BOOLEAN_FALSE) {
+			return FALSE;
 		}
+		back(b);
+		return null;
 	}
 
 	private void parseEndOfRule() throws SyntaxErrorException {
@@ -209,5 +219,33 @@ public class RuleParser {
 		token = new Tokenizer(rule);
 		Rule r = parseRule();
 		return r;
+	}
+
+	private static final class TrueExpression implements Expression {
+
+		@Override
+		public boolean eval(Areq areq) {
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "true";
+		}
+
+	}
+
+	private static final class FalseExpression implements Expression {
+
+		@Override
+		public boolean eval(Areq areq) {
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return "false";
+		}
+
 	}
 }

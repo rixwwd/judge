@@ -98,6 +98,19 @@ public class Tokenizer {
 					}
 					back();
 					return handleKeyword(builder.toString(), startIndex);
+				} else if (isDigit(c)) {
+					// 数値
+					startIndex = index;
+					builder = new StringBuilder();
+					builder.append(c);
+					parsed = true;
+					c = getChar();
+					while (isDigit(c)) {
+						builder.append(c);
+						c = getChar();
+					}
+					back();
+					return new Token(TokenType.TOKEN_INTEGER, Integer.parseUnsignedInt(builder.toString()), startIndex);
 				} else if (isQuote(c)) {
 					// 文字列
 					startIndex = index;
@@ -127,7 +140,7 @@ public class Tokenizer {
 				throw new SyntaxErrorException(index);
 			}
 		}
-		return new Token(TokenType.TOKEN_END_OF_RULE, null, index);
+		return new Token(TokenType.TOKEN_END_OF_RULE, index);
 	}
 
 }

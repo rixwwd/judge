@@ -25,6 +25,7 @@ public enum TokenType {
 	TOKEN_BOOLEAN_TRUE("true"),
 	TOKEN_BOOLEAN_FALSE("false"),
 	TOKEN_STRING(null),
+	TOKEN_INTEGER(null),
 	TOKEN_END_OF_RULE(null);
 	//@formatter:on
 
