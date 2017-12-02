@@ -31,6 +31,12 @@ public class RuleParser {
 
 	private Rule parseRule() throws SyntaxErrorException {
 
+		Token t = getToken();
+		if (t.getTokenType() == TokenType.TOKEN_END_OF_RULE) {
+			return null;
+		}
+		back(t);
+
 		Action a = parseAction();
 		boolean q = parseQuick();
 		Expression e = parseExpression();

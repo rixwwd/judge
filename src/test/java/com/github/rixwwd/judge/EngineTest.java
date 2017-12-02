@@ -70,6 +70,7 @@ public class EngineTest {
 	public void inTest() throws Exception {
 		//@formatter:off
 		String str = "# Account Number Blacklist\n"
+				+ "\n"
 				+ "reject true\n"
 				+ "challenge acctNumber in [\"111\", \"222\", \"333\"]";
 		//@formatter:on

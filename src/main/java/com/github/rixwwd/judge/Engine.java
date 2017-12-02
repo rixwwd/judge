@@ -7,33 +7,35 @@ import java.util.List;
 public class Engine {
 
 	private List<Rule> rules;
-	
+
 	public Engine() {
-		
+
 	}
-	
+
 	public static Engine compile(String str) throws SyntaxErrorException {
-		
+
 		int lineNumber = 0;
 		String[] lines = str.split("\r?\n");
 		List<Rule> rules = new ArrayList<>(lines.length);
-		for(String l : lines) {
+		for (String l : lines) {
 			RuleParser rp = new RuleParser();
 			try {
 				Rule r = rp.parse(l);
-				rules.add(r);
+				if (r != null) {
+					rules.add(r);
+				}
 			} catch (SyntaxErrorException e) {
 				throw new SyntaxErrorException(lineNumber, e.getColumn());
 			}
 			lineNumber++;
 		}
-		
+
 		Engine engine = new Engine();
 		engine.rules = Collections.unmodifiableList(rules);
 		return engine;
 	}
-	
-	public  Action eval(String line, Areq areq) {
+
+	public Action eval(String line, Areq areq) {
 		RuleParser rp = new RuleParser();
 		Rule r;
 		try {
@@ -41,18 +43,18 @@ public class Engine {
 		} catch (SyntaxErrorException e) {
 			throw new RuntimeException(e);
 		}
-		
-		boolean ans = r.eval(areq);
-		
+
+		boolean ans = r == null ? false : r.eval(areq);
+
 		return ans ? r.getAction() : null;
 
 	}
-	
+
 	public Action eval(Areq areq) {
 
 		Action action = null;
-		
-		for(Rule r : rules) {
+
+		for (Rule r : rules) {
 			if (r.eval(areq)) {
 				action = r.getAction();
 				if (r.isQuick()) {
@@ -60,7 +62,7 @@ public class Engine {
 				}
 			}
 		}
-		
+
 		return action;
 	}
 
