@@ -25,6 +25,8 @@ expression2 := condition | "(" expression ")"
 condition := fieldname operator value | boolean
 fielfname := [a-zA-Z][a-zA-Z0-9]*
 operator := "eq" | "ne" | "le" | "lt" | "ge" | "gt"
-value := "\"" [a-zA-Z0-9] "\""
+value := boolean | integer | string
+integer := [0-9]+
 boolean := "true" | "false"
+string := "\"" [a-zA-Z0-9] "\""
 ~~~

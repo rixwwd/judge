@@ -1,8 +1,10 @@
 package com.github.rixwwd.judge;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
+import org.hamcrest.core.IsNot;
 import org.junit.Test;
 
 public class EngineTest {
@@ -56,4 +58,14 @@ public class EngineTest {
 		areq.setPurchaseCurrency("392");
 		assertThat(engine.eval(areq), is(Action.AUTHNETICATED));
 	}
+
+	@Test
+	public void booleanComp() throws Exception {
+		String str = "reject payTokenInd eq true";
+		Engine engine = Engine.compile(str);
+		Areq areq = new Areq();
+		areq.setPayTokenInd(Boolean.TRUE);
+		assertThat(engine.eval(areq), is(Action.REJECT));
+	}
+
 }
