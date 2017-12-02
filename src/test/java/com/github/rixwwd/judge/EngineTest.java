@@ -1,10 +1,8 @@
 package com.github.rixwwd.judge;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
-import org.hamcrest.core.IsNot;
 import org.junit.Test;
 
 public class EngineTest {
