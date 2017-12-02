@@ -24,9 +24,10 @@ expression1 := "not"? expression2
 expression2 := condition | "(" expression ")"
 condition := fieldname operator value | boolean
 fielfname := [a-zA-Z][a-zA-Z0-9]*
-operator := "eq" | "ne" | "le" | "lt" | "ge" | "gt"
-value := boolean | integer | string
+operator := "eq" | "ne" | "le" | "lt" | "ge" | "gt" | "in"
+value := boolean | integer | string | list
 integer := [0-9]+
 boolean := "true" | "false"
 string := "\"" [a-zA-Z0-9] "\""
+list := "[" (value ("," value)*)? "]"
 ~~~

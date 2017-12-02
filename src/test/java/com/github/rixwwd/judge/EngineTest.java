@@ -66,4 +66,22 @@ public class EngineTest {
 		assertThat(engine.eval(areq), is(Action.REJECT));
 	}
 
+	@Test
+	public void inTest() throws Exception {
+		//@formatter:off
+		String str = "# Account Number Blacklist\n"
+				+ "reject true\n"
+				+ "challenge acctNumber in [\"111\", \"222\", \"333\"]";
+		//@formatter:on
+		Engine engine = Engine.compile(str);
+		Areq areq = new Areq();
+
+		areq.setAcctNumber("222");
+		assertThat(engine.eval(areq), is(Action.CHALLENGE));
+
+		areq.setAcctNumber("999");
+		assertThat(engine.eval(areq), is(Action.REJECT));
+
+	}
+
 }

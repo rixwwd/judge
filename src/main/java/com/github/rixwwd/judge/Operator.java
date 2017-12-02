@@ -1,5 +1,7 @@
 package com.github.rixwwd.judge;
 
+import java.util.List;
+
 public enum Operator {
 
 	EQ {
@@ -58,11 +60,6 @@ public enum Operator {
 		}
 
 		@Override
-		boolean eval(boolean a, boolean b) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
 		boolean eval(int a, int b) {
 			return a <= b;
 		}
@@ -76,11 +73,6 @@ public enum Operator {
 		@Override
 		public String toString() {
 			return "lt";
-		}
-
-		@Override
-		boolean eval(boolean a, boolean b) {
-			throw new UnsupportedOperationException();
 		}
 
 		@Override
@@ -100,11 +92,6 @@ public enum Operator {
 		}
 
 		@Override
-		boolean eval(boolean a, boolean b) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
 		boolean eval(int a, int b) {
 			return a >= b;
 		}
@@ -121,19 +108,38 @@ public enum Operator {
 		}
 
 		@Override
-		boolean eval(boolean a, boolean b) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
 		boolean eval(int a, int b) {
 			return a > b;
 		}
+	},
+	IN {
+
+		@Override
+		boolean eval(Object a, List<Object> b) {
+
+			return b.contains(a);
+		}
+
+		@Override
+		public String toString() {
+			return "in";
+		}
+
 	};
 
-	abstract boolean eval(String a, String b);
+	boolean eval(String a, String b) {
+		throw new UnsupportedOperationException();
+	}
 
-	abstract boolean eval(boolean a, boolean b);
+	boolean eval(boolean a, boolean b) {
+		throw new UnsupportedOperationException();
+	}
 
-	abstract boolean eval(int a, int b);
+	boolean eval(int a, int b) {
+		throw new UnsupportedOperationException();
+	}
+
+	boolean eval(Object a, List<Object> b) {
+		throw new UnsupportedOperationException();
+	}
 }

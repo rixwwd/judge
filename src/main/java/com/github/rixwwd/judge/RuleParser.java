@@ -174,6 +174,8 @@ public class RuleParser {
 			return Operator.GE;
 		case TOKEN_OP_GT:
 			return Operator.GT;
+		case TOKEN_OP_IN:
+			return Operator.IN;
 		default:
 			throw new SyntaxErrorException(op.getColumn());
 		}
@@ -190,10 +192,45 @@ public class RuleParser {
 			return Boolean.TRUE;
 		case TOKEN_BOOLEAN_FALSE:
 			return Boolean.FALSE;
+		case TOKEN_SQUARE_BRACKET_L:
+			back(v);
+			return parseList();
 		default:
 			back(v);
 		}
 		return null;
+	}
+
+	private List<Object> parseList() throws SyntaxErrorException {
+		Token sbl = getToken();
+		if (sbl.getTokenType() != TokenType.TOKEN_SQUARE_BRACKET_L) {
+			back(sbl);
+			return null;
+		}
+
+		List<Object> list = new ArrayList<>();
+		Token commaOrSquareBracketRight = getToken();
+		back(commaOrSquareBracketRight);
+		while (commaOrSquareBracketRight.getTokenType() != TokenType.TOKEN_SQUARE_BRACKET_R) {
+			Object v = parseValue();
+			if (v == null) {
+				Token t = getToken();
+				throw new SyntaxErrorException(t.getColumn());
+			}
+
+			list.add(v);
+
+			commaOrSquareBracketRight = getToken();
+
+			if ((commaOrSquareBracketRight.getTokenType() == TokenType.TOKEN_COMMA)
+					|| commaOrSquareBracketRight.getTokenType() == TokenType.TOKEN_SQUARE_BRACKET_R) {
+				continue;
+			} else {
+				throw new SyntaxErrorException(commaOrSquareBracketRight.getColumn());
+			}
+		}
+
+		return list;
 	}
 
 	private Expression parseBoolean() throws SyntaxErrorException {

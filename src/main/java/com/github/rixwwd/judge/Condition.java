@@ -4,6 +4,7 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class Condition implements Expression {
 
@@ -19,6 +20,7 @@ public class Condition implements Expression {
 		this.value = value;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean eval(Areq areq) {
 		Object fieldValue = getValue(fieldName, areq);
 
@@ -32,6 +34,8 @@ public class Condition implements Expression {
 			return operator.eval((Integer) fieldValue, (Integer) value);
 		} else if ((fieldValue instanceof Boolean) && (value instanceof Boolean)) {
 			return operator.eval((Boolean) fieldValue, (Boolean) value);
+		} else if (value instanceof List) {
+			return operator.eval(fieldValue, (List<Object>) value);
 		}
 
 		throw new RuntimeException();

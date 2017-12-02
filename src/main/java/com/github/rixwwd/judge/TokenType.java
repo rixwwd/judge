@@ -17,15 +17,19 @@ public enum TokenType {
 	TOKEN_OP_LT("lt"),
 	TOKEN_OP_GE("ge"),
 	TOKEN_OP_GT("gt"),
+	TOKEN_OP_IN("in"),
 	TOKEN_OP_AND("and"),
 	TOKEN_OP_OR("or"),
 	TOKEN_OP_NOT("not"),
 	TOKEN_PARENTHESIS_L(null),
 	TOKEN_PARENTHESIS_R(null),
+	TOKEN_SQUARE_BRACKET_L(null),
+	TOKEN_SQUARE_BRACKET_R(null),	
 	TOKEN_BOOLEAN_TRUE("true"),
 	TOKEN_BOOLEAN_FALSE("false"),
 	TOKEN_STRING(null),
 	TOKEN_INTEGER(null),
+	TOKEN_COMMA(null),
 	TOKEN_END_OF_RULE(null);
 	//@formatter:on
 

@@ -6,6 +6,9 @@ public class Tokenizer {
 
 	private static String PARENTHESIS_L = "(";
 	private static String PARENTHESIS_R = ")";
+	private static String SQUARE_BRACKET_L = "[";
+	private static String SQUARE_BRACKET_R = "]";
+	private static String COMMA = ",";
 
 	private char[] source;
 	private int index;
@@ -56,6 +59,18 @@ public class Tokenizer {
 
 	private static boolean isParenthesisRight(char c) {
 		return c == ')';
+	}
+
+	private static boolean isSquareBracketLeft(char c) {
+		return c == '[';
+	}
+
+	private static boolean isSquareBracketRight(char c) {
+		return c == ']';
+	}
+
+	private static boolean isCommna(char c) {
+		return c == ',';
 	}
 
 	private Token handleKeyword(String keyword, int col) {
@@ -125,6 +140,12 @@ public class Tokenizer {
 					return new Token(TokenType.TOKEN_PARENTHESIS_L, PARENTHESIS_L, index);
 				} else if (isParenthesisRight(c)) {
 					return new Token(TokenType.TOKEN_PARENTHESIS_R, PARENTHESIS_R, index);
+				} else if (isSquareBracketLeft(c)) {
+					return new Token(TokenType.TOKEN_SQUARE_BRACKET_L, SQUARE_BRACKET_L, index);
+				} else if (isSquareBracketRight(c)) {
+					return new Token(TokenType.TOKEN_SQUARE_BRACKET_R, SQUARE_BRACKET_R, index);
+				} else if (isCommna(c)) {
+					return new Token(TokenType.TOKEN_COMMA, COMMA, index);
 				} else if (isHash(c)) {
 					// コメント
 					index = source.length;
